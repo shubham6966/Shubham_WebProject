@@ -1,0 +1,98 @@
+
+{% extends 'NutritionMangement/base.html' %}
+{% block title %}Breakfast{% endblock %}
+
+{% block body_block %}
+    {% load bootstrap3 %}
+    <div class="jumbotron">
+        <center>
+            <h3>What you eat for breakfast today?</h3>
+            {{ date.date }}
+        </center>
+    </div>
+    <center>
+    <form method="post" class="form-horizontal">
+{% csrf_token %}
+    {%  bootstrap_form break_form %}
+
+    <input type="submit" class="btn btn-primary" name="submit" value="Save">
+    <input class="btn btn-primary" type="submit"  name="SaveAnother" value="Save and Add another">
+    </form>
+</center>
+    <h2 class="jumbotron">You added</h2>
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Item name</th>
+        <th>Quantity</th>
+          <th></th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+    {% for item in eat_today %}
+        <td>{{ item.Item }}</td>
+        <td>{{ item.quantity }}</td>
+      <td><a class="btn btn-warning" data-toggle="modal"  id="{{ item.id }}" data-target="#edit">Edit</a> </td>
+        <td><a class="btn btn-danger" data-toggle="modal"  id="{{ item.id }}" data-target="#delete">Delete</a> </td>
+        <div class="modal fade" id="edit" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit</h4>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{% url 'NutritionManagement:breakfast_edit' item.id %}">
+              <input type="text" name="name_item" placeholder="{{ item.Item }}" />
+              <input type="number" placeholder="{{ item.quantity }}" name="quantity"/>
+              {% csrf_token %}
+              <input type="submit" class="btn btn-warning" name="submit" value="Update">
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+        <div class="modal fade" id="delete" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Are you sure to delete this Item</h4>
+        </div>
+        <div class="modal-body">
+
+          <form method="post" action="{% url 'NutritionManagement:breakfast_delete' item.id %}">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-danger" name="submit" value="Delete">
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+    <a class="btn btn-success" href="{% url 'NutritionManagement:NutrientsCalc' %}">Get calories</a>
+
+    {% if eat_nothing == 0 %}
+        <script>
+            alert("First you have to eat something")
+        </script>
+    {% endif %}
+{% endblock %}

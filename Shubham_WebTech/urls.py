@@ -18,6 +18,6 @@ from django.contrib import admin
 from NutritionManagement import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^NutritionMangement/',include('NutritionManagement.views')),
+    url(r'^NutritionMangement/',include('NutritionManagement.urls')),
     url(r'^$',views.index,name="index"),
 ]

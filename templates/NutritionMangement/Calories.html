@@ -1,0 +1,74 @@
+{% extends 'NutritionMangement/base.html' %}
+
+{% block body_block %}
+<div class="jumbotron">
+<h2>Nutrients and Calorie intake </h2>
+</div>
+
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Item name</th>
+          <th>Quantity</th>
+        <th>Protein</th>
+        <th>Vitamins</th>
+          <th>Mineral</th>
+          <th>Carbohydrates</th>
+          <th>Fat</th>
+          <th>Calorie</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        {% for data in intake_today%}
+             <tr>
+            <td>{{ data.item_name }}</td>
+             <td>{{ data.quantity  }}</td>
+                 {% if data.protien %}
+            <td>{{ data.protien }}</td>
+                     {% else %}
+                     <td>-</td>
+                 {% endif %}
+             {% if data.vitamin %}
+             <td>{{ data.vitamin }}</td>
+                 {% else %}
+                 <td>-</td>
+            {% endif %}
+             {% if data.mineral %}
+            <td>{{ data.mineral }}</td>
+                     {% else %}
+                     <td>-</td>
+                 {% endif %}
+             {% if data.carbohydrates %}
+            <td>{{ data.carbohydrates }}</td>
+                     {% else %}
+                     <td>-</td>
+                 {% endif %}
+             {% if data.fat %}
+            <td>{{ data.fat }}</td>
+                     {% else %}
+                     <td>-</td>
+                 {% endif %}
+             {% if data.calorie%}
+            <td>{{ data.calorie}}</td>
+                     {% else %}
+                     <td>-</td>
+                 {% endif %}
+
+
+
+
+             </tr>
+
+          {% endfor %}
+    <td>
+        Total Calorie :-- {{ total_calorie }}
+    </td>
+
+
+
+    </tbody>
+  </table>
+
+    <a href="{% url "NutritionManagement:breakfast" %}">Add another item</a>
+{% endblock %}
